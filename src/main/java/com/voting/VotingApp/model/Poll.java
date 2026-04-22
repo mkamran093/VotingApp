@@ -18,6 +18,10 @@ public class Poll {
     private String question;
 
     @ElementCollection
+    @CollectionTable(
+            name = "poll_options",
+            joinColumns = @JoinColumn(name = "poll_id")
+    )
     private List<OptionVote> options = new ArrayList<>();
 
 //    @ElementCollection
