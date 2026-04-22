@@ -8,7 +8,7 @@ import { environment } from '../../environments/environment';
   providedIn: 'root'
 })
 export class PollService {
-  private apiUrl = `${environment.apiBaseUrl}`;
+  private apiUrl = `${environment.apiBaseUrl}/api/polls`;
 
   constructor(private http: HttpClient) {}
 
