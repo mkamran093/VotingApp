@@ -31,3 +31,16 @@ build/
 
 ### VS Code ###
 .vscode/
+
+# Angular specific
+voting-app/node_modules/
+voting-app/dist/
+voting-app/.angular/
+voting-app/tmp/
+
+# IDE files (if any)
+.vscode/
+
+# OS files
+.DS_Store
+Thumbs.db

@@ -1,0 +1,85 @@
+<div class="create-poll-page">
+  <div class="page-header">
+    <h1>Create a New Poll</h1>
+    <p class="subtitle">Ask a question and collect votes from your audience</p>
+  </div>
+
+  <div class="form-card">
+    <form [formGroup]="pollForm" (ngSubmit)="onSubmit()">
+
+      <!-- Question -->
+      <div class="form-group">
+        <label for="question">Your Question</label>
+        <input
+          id="question"
+          type="text"
+          formControlName="question"
+          placeholder="e.g. What is your favourite programming language?"
+          [class.invalid]="pollForm.get('question')?.invalid && pollForm.get('question')?.touched"
+        />
+        <span
+          class="field-error"
+          *ngIf="pollForm.get('question')?.invalid && pollForm.get('question')?.touched"
+        >
+          Please enter a question (at least 5 characters)
+        </span>
+      </div>
+
+      <!-- Options -->
+      <div class="form-group">
+        <label>Poll Options</label>
+        <div class="options-list" formArrayName="options">
+          <div
+            *ngFor="let ctrl of options.controls; let i = index"
+            [formGroupName]="i"
+            class="option-input-row"
+          >
+            <span class="option-label">{{ i + 1 }}</span>
+            <input
+              type="text"
+              formControlName="option"
+              [placeholder]="'Option ' + (i + 1)"
+              [class.invalid]="ctrl.get('option')?.invalid && ctrl.get('option')?.touched"
+            />
+            <button
+              type="button"
+              class="btn-remove"
+              (click)="removeOption(i)"
+              [disabled]="options.length <= 2"
+              title="Remove option"
+            >
+              ✕
+            </button>
+          </div>
+        </div>
+
+        <button
+          type="button"
+          class="btn-add-option"
+          (click)="addOption()"
+          [disabled]="options.length >= 8"
+        >
+          + Add Option
+        </button>
+        <p class="hint">Minimum 2 options, maximum 8</p>
+      </div>
+
+      <!-- Error -->
+      <div *ngIf="error" class="error-banner">⚠ {{ error }}</div>
+
+      <!-- Submit -->
+      <div class="form-actions">
+        <button type="button" class="btn-cancel" routerLink="/polls">Cancel</button>
+        <button
+          type="submit"
+          class="btn-submit"
+          [disabled]="pollForm.invalid || submitting"
+        >
+          <span *ngIf="!submitting">Create Poll</span>
+          <span *ngIf="submitting">Creating...</span>
+        </button>
+      </div>
+
+    </form>
+  </div>
+</div>

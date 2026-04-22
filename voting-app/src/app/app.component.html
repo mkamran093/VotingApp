@@ -1,0 +1,23 @@
+<div class="app-wrapper">
+  <header class="app-header">
+    <div class="header-inner">
+      <a routerLink="/polls" class="brand">
+        <span class="brand-icon">◈</span>
+        <span class="brand-text">PollWave</span>
+      </a>
+      <nav class="nav-links">
+        <a routerLink="/polls" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">All Polls</a>
+        <a routerLink="/polls/create" routerLinkActive="active" class="btn-create">+ New Poll</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="main-content">
+    <router-outlet></router-outlet>
+  </main>
+
+  <footer class="app-footer">
+  <p>PollWave &mdash; Real-time polling powered by Spring Boot. More features are on the way.</p>
+  <p>Frontend built using Angular with AI-assisted tooling to support backend demonstration.</p>
+</footer>
+</div>

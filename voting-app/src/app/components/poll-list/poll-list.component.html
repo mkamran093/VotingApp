@@ -1,0 +1,57 @@
+<div class="poll-list-page">
+  <div class="page-hero">
+    <h1>Active Polls</h1>
+    <p class="subtitle">Cast your vote and see what others think</p>
+  </div>
+
+  <div *ngIf="loading" class="state-container">
+    <div class="spinner"></div>
+    <p>Loading polls...</p>
+  </div>
+
+  <div *ngIf="error" class="state-container error-state">
+    <span class="state-icon">⚠</span>
+    <p>{{ error }}</p>
+    <button class="btn-retry" (click)="loadPolls()">Try Again</button>
+  </div>
+
+  <div *ngIf="!loading && !error && polls.length === 0" class="state-container empty-state">
+    <span class="state-icon">◎</span>
+    <p>No polls yet. Be the first to create one!</p>
+    <a routerLink="/polls/create" class="btn-primary">Create a Poll</a>
+  </div>
+
+  <div *ngIf="!loading && !error && polls.length > 0" class="polls-grid">
+    <div
+      *ngFor="let poll of polls; let i = index"
+      class="poll-card"
+      [style.animation-delay]="i * 0.07 + 's'"
+      (click)="goToDetail(poll.id)"
+    >
+      <div class="card-accent"></div>
+      <div class="card-body">
+        <span class="poll-id">#{{ poll.id }}</span>
+        <h2 class="poll-question">{{ poll.question }}</h2>
+        <div class="poll-options-preview">
+          <span *ngFor="let opt of poll.options | slice:0:3" class="option-chip">
+            {{ opt.option }}
+          </span>
+          <span *ngIf="poll.options.length > 3" class="option-chip more">
+            +{{ poll.options.length - 3 }} more
+          </span>
+        </div>
+      </div>
+      <div class="card-footer">
+        <div class="stat">
+          <span class="stat-value">{{ getTotalVotes(poll) }}</span>
+          <span class="stat-label">votes</span>
+        </div>
+        <div class="stat">
+          <span class="stat-value leading">{{ getLeadingOption(poll) }}</span>
+          <span class="stat-label">leading</span>
+        </div>
+        <span class="view-link">View →</span>
+      </div>
+    </div>
+  </div>
+</div>

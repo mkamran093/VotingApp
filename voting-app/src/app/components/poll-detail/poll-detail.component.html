@@ -1,0 +1,71 @@
+<div class="poll-detail-page">
+  <button class="back-btn" (click)="goBack()">← Back to Polls</button>
+
+  <div *ngIf="loading" class="state-container">
+    <div class="spinner"></div>
+    <p>Loading poll...</p>
+  </div>
+
+  <div *ngIf="error && !poll" class="state-container error-state">
+    <span>⚠</span>
+    <p>{{ error }}</p>
+  </div>
+
+  <div *ngIf="poll && !loading" class="poll-container" [class.voted]="hasVoted">
+    <div class="poll-header">
+      <span class="poll-badge">#{{ poll.id }}</span>
+      <h1 class="poll-question">{{ poll.question }}</h1>
+      <p class="vote-count">{{ getTotalVotes() }} total vote{{ getTotalVotes() !== 1 ? 's' : '' }}</p>
+    </div>
+
+    <!-- Success Message -->
+    <div *ngIf="successMessage" class="success-banner">
+      ✓ {{ successMessage }}
+    </div>
+
+    <!-- Error Message -->
+    <div *ngIf="error" class="error-banner">
+      ⚠ {{ error }}
+    </div>
+
+    <!-- Options -->
+    <div class="options-list">
+      <div
+        *ngFor="let opt of poll.options; let i = index"
+        class="option-row"
+        [class.selected]="selectedOption === i"
+        [class.winner]="hasVoted && getPercentage(opt.voteCount) === getPercentage(poll.options[0].voteCount) && opt.voteCount > 0"
+        (click)="selectOption(i)"
+        [style.animation-delay]="i * 0.08 + 's'"
+      >
+        <div class="option-info">
+          <span class="option-radio" [class.checked]="selectedOption === i">
+            <span *ngIf="selectedOption === i" class="radio-dot"></span>
+          </span>
+          <span class="option-text">{{ opt.option }}</span>
+          <span *ngIf="hasVoted" class="option-pct">{{ getPercentage(opt.voteCount) }}%</span>
+        </div>
+        <div *ngIf="hasVoted" class="progress-bar-wrap">
+          <div
+            class="progress-bar"
+            [style.width.%]="getPercentage(opt.voteCount)"
+          ></div>
+        </div>
+        <div *ngIf="hasVoted" class="vote-tally">{{ opt.voteCount }} vote{{ opt.voteCount !== 1 ? 's' : '' }}</div>
+      </div>
+    </div>
+
+    <!-- Vote Button -->
+    <div *ngIf="!hasVoted" class="vote-action">
+      <button
+        class="btn-vote"
+        [disabled]="selectedOption === null || voting"
+        (click)="submitVote()"
+      >
+        <span *ngIf="!voting">Cast Vote</span>
+        <span *ngIf="voting">Submitting...</span>
+      </button>
+      <p *ngIf="selectedOption === null" class="hint">Select an option above to vote</p>
+    </div>
+  </div>
+</div>
